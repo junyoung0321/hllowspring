@@ -17,8 +17,13 @@ import java.util.stream.Collectors;
 
 
 public class PaymentService {
+    private final WebApiExRateProvider exRateProvider;
+
+    public PaymentService() {
+        this.exRateProvider = new WebApiExRateProvider();
+    }
+
     public Payment prepare(Long orderId, String currency, BigDecimal foreignCurrencyAmount) throws IOException {
-        WebApiExRateProvider exRateProvider = new WebApiExRateProvider();
         BigDecimal exRate = exRateProvider.getWebExRate(currency);
         BigDecimal convertedAmount = foreignCurrencyAmount.multiply(exRate);
         LocalDateTime validUntile = LocalDateTime.now().plusMinutes(30);
