@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
 
 
 public class PaymentService {
-    private final WebApiExRateProvider exRateProvider;
+    private final SimpleExRateProvider exRateProvider;
 
     public PaymentService() {
-        this.exRateProvider = new WebApiExRateProvider();
+        this.exRateProvider = new SimpleExRateProvider();
     }
 
     public Payment prepare(Long orderId, String currency, BigDecimal foreignCurrencyAmount) throws IOException {
-        BigDecimal exRate = exRateProvider.getWebExRate(currency);
+        BigDecimal exRate = exRateProvider.getExRate(currency);
         BigDecimal convertedAmount = foreignCurrencyAmount.multiply(exRate);
         LocalDateTime validUntile = LocalDateTime.now().plusMinutes(30);
 
